@@ -24,7 +24,7 @@ assign memory[7] = 8'b00011000; // s1(13)+s2(8) to s0 : r'21'13'85 rw 21
 assign memory[8] = 8'b01001101; // m22(-6) to s3 : r'21'13'8'-6' rw -6
 assign memory[9] = 8'b00011110; // s1(13)+s3(-6) to s2 : r'21'13'7'-6' rw 7
 
-assign memory[8] = 8'b11000011; // stop
+assign memory[10] = 8'b11000011; // stop
 
 // Instruction end
 
