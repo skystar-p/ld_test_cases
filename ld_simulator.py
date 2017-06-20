@@ -4,7 +4,7 @@ import sys
 def print_registers(reg):
     print('registers: ', end='')
     for i, r in enumerate(reg):
-        print('{} '.format(r), end='')
+        print('{}({}) '.format(r, hex(r)), end='')
     print('')
 
 
@@ -21,8 +21,13 @@ for i in range(16):
 for i in range(0, -16, -1):
     memory.append(i)
 
+pc = 0
 
-for instr in instructions:
+while True:
+    instr = instructions[pc]
+    print('==============================================')
+    print('Current PC: {}'.format(pc))
+    print('==============================================')
     opcode = instr[0:2]
     r1 = int(instr[2:4])
     r2 = int(instr[4:6])
@@ -44,16 +49,26 @@ for instr in instructions:
         r3 = -1
 
     if opcode == '00':
-        register[r3] = register[r1] + register[r2]
-        print('reg write data: {}'.format(register[r1] + register[r2]))
+        res = register[r1] + register[r2]
+        print('reg write data: {}({})'.format(res, hex(res)))
+        register[r3] = res
         print_registers(register)
     elif opcode == '01':
-        register[r2] = memory[register[r1] + r3]
-        print('reg write data: {}'.format(memory[register[r1] + r3]))
+        res = memory[register[r1] + r3]
+        print('reg write data: {}({})'.format(res, hex(res)))
+        register[r2] = res
         print_registers(register)
     elif opcode == '10':
-        memory[register[r1] + r3] = register[r2]
-        print('memory loaded: value {} to memory {}'.format(register[r2], r1 + r3))
+        res = register[r2]
+        memory[register[r1] + r3] = res
+        print('memory loaded: value {}({}) to memory {}'.format(res, hex(res), r1 + r3))
+    elif opcode == '11':
+        if r3 == -1:
+            print('jump -1: infinite loop')
+            break
+        print('jump: pc {} to {}'.format(pc, pc+r3))
+
     print()
+    pc += 1
 
 
